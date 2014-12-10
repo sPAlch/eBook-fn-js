@@ -1108,6 +1108,102 @@ $(function(){
 
 	}
 
+	function drawSmallImg( $singleCanvas, image){
+
+		var imgSource = image.src;
+		var canvSize = countCanvasSize( image );
+
+		$singleCanvas.attr({
+
+			"width" : canvSize.imgW,
+			"height" : canvSize.imgH
+
+		}).drawImage({
+
+		  source: imgSource,
+		  width: canvSize.imgW,
+		  height: canvSize.imgH,
+		  fromCenter: false
+
+		});
+
+	}
+
+	function adjustCanvasSize(){
+
+		$("#book-album li canvas").each(function(){
+
+			var canW = Math.floor( $(this).attr("width")*10 )/10;
+			var canH = Math.floor( $(this).attr("height")*10 )/10;
+
+			var scalVal = sImgW/canW;
+
+			if( canW == 268){
+
+				scalVal = sImgW/canW;
+				console.log("canW:" + canW + "; canH:" + canH + "; scalVal:" + scalVal);
+
+			}else{
+
+				scalVal = sImgH/canH;
+			}
+
+
+			$(this).css({
+
+				"transform" : "scale(" + scalVal + "," + scalVal + ")",
+				"-webkit-transform" : "scale(" + scalVal + "," + scalVal + ")",
+				"left" : -(canW - sImgW)/2 + sPadding,
+				"top" : -(canH - sImgH)/2 + sPadding
+
+			})
+
+		})
+
+	}
+
+	function countCanvasSize( image ){
+
+		var imgW = image.width;
+		var imgH = image.height;
+
+		var imgRatio = imgW/imgH;
+
+		var stImgW = 134;
+		var stImgH = 116;
+
+		var sImgRatio = stImgW/stImgH;
+
+		if( sImgRatio >= imgRatio ){
+
+			if( imgH >  stImgH*2 ){
+
+				imgW = imgRatio*stImgH*2;
+				imgH = stImgH*2;
+
+			}
+
+		}else{
+
+			if( imgW >  stImgW*2 ){
+
+				imgW = stImgW*2;
+				imgH = stImgW*2/imgRatio ;
+
+			}
+
+		}
+
+		var canvSize = {
+
+			"imgW" : imgW,
+			"imgH" : imgH
+
+		};
+
+		return canvSize;
+
+	}
 	var preAx = 0;
 	var preAy = 0;
 
